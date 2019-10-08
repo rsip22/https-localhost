@@ -3,9 +3,7 @@
 const path = require("path")
 const fs = require("fs")
 const http = require("http")
-// spdy allows http2, while waiting express to support the http2 module
-const https = process.env.NODE_ENV === "production"
-  ? require("spdy") : require("https")
+const https = require("https")
 const express = require("express")
 const getCerts = require(path.resolve(__dirname, "certs.js")).getCerts
 
@@ -26,15 +24,6 @@ const createServer = (domain = "localhost") => {
       .listen(port)
     console.info("Server running on port " + port + ".")
     return app.server
-  }
-
-  // use gzip compression minify
-  if (process.env.NODE_ENV === "production") {
-    const compression = require("compression")
-    const minify = require("express-minify")
-    app.use(compression({ threshold: 1 }))
-    app.use(minify())
-    app.set("json spaces", 0)
   }
 
   /* SETUP USEFUL FUNCTIONS */

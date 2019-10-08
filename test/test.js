@@ -5,7 +5,7 @@ const https = require("https")
 
 const sinon = require("sinon")
 
-let app = require("../index.js")()
+const app = require("../index.js")()
 const certs = require("../certs.js")
 
 const HTTPS_PORT = 4443
@@ -287,31 +287,6 @@ describe("Testing redirect", () => {
           assert(res.statusCode === 301)
           assert(res.headers.location === "https://localhost:4443/")
         })
-      done()
-    })()
-  })
-})
-
-// OTHER TESTS
-describe("Testing additional features", function() {
-  // timeout 10 secs, since sometimes 3 secs are not sufficient
-  this.timeout(10000)
-
-  it("is ready for production", function(done) {
-    (async() => {
-      // set NODE_ENV to production
-      delete require.cache[require.resolve("../index.js")]
-      process.env.NODE_ENV = "production"
-      app = require("../index.js")()
-      // start the server (serving the test folder)
-      app.serve("test", HTTPS_PORT)
-      // make the request and check the output
-      await makeRequest("/static.html")
-        .then(res => assert(res.headers["content-encoding"] === "gzip"))
-      // reset NODE_ENV and app
-      delete require.cache[require.resolve("../index.js")]
-      delete process.env.NODE_ENV
-      app = require("../index.js")()
       done()
     })()
   })
