@@ -9,7 +9,7 @@ jobs:
 
     strategy:
       matrix:
-        os: [ubuntu-latest, macOS-latest]
+        os: [ubuntu-latest, macOS-latest, ARM32]
         node: [10, 12, 13]
         exclude:
           - os: ubuntu-latest
@@ -27,7 +27,7 @@ jobs:
           npm test
         env:
           CI: true
-    
+
   coverage:
     name: Coverage (Coveralls)
     needs: test
